@@ -10,7 +10,7 @@ const SideNav = () => {
     <div className="mt-14">
         <ul className="font-semibold space-y-2">
             <li className="flex items-center space-x-4 hover:bg-white p-3 rounded-l-lg cursor-pointer hover:shadow-xl hover:shadow-gray-500/50">
-                <MdLibraryAdd/>
+                <MdLibraryAdd />
                 <span>Add New Expense</span>
             </li>
             <li className="flex items-center space-x-4 hover:bg-white p-3 rounded-l-lg cursor-pointer hover:shadow-xl hover:shadow-gray-500/50">

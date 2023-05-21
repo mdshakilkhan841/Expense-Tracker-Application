@@ -1,0 +1,12 @@
+summary::after {
+    position: absolute;
+    content: '▼';
+    right: 20px; /* Adjust the right offset as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.2s;
+}
+
+details[open] summary::after {
+    transform: translateY(-50%) rotate(180deg);
+}
