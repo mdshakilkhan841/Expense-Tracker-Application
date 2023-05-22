@@ -1,10 +1,12 @@
 const AddExpense = () => {
     return (
-        <div className="text-gray-600 body-font flex items-center justify-center mt-32">
-            <form className="lg:w-1/3 sm:w-1/2 bg-gray-100 rounded-lg p-5 flex flex-col w-full">
-                <h2 className="text-gray-900 text-lg text-center font-medium title-font mb-5">
-                    Add Expense
-                </h2>
+        <div className="text-gray-600 body-font flex items-center justify-center mt-32 mb-10">
+            <form className="lg:w-1/3 sm:w-1/2 bg-gray-100 p-5 flex flex-col w-full border rounded shadow">
+                <div className="mb-5">
+                    <h2 className="text-gray-900 text-lg text-center font-medium title-font pb-5 border-b">
+                        Add Expense
+                    </h2>
+                </div>
                 <div className="relative mb-1">
                     <label
                         htmlFor="full-name"
@@ -66,7 +68,10 @@ const AddExpense = () => {
                     <label htmlFor="Notes" className="leading-7 text-sm  text-gray-600">
                         Notes
                     </label>
-                    <textarea name="notes" className="w-full bg-white rounded border border-gray-300 focus:ring-2 focus:ring-indigo-200 h-18 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-8 transition-colors duration-200 ease-in-out" />
+                    <textarea
+                        name="notes"
+                        className="w-full bg-white rounded border border-gray-300 focus:ring-2 focus:ring-indigo-200 h-18 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-8 transition-colors duration-200 ease-in-out"
+                    />
                 </div>
                 <div className="relative mt-4 mb-4 flex justify-between">
                     <button
