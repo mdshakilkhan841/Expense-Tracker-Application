@@ -1,3 +1,6 @@
+import { addExpense } from "../../apis/api";
+
+
 const ExpenseForm = ({expenseData, setExpenseData}) => {
 
     const handleSubmit = (e) => {
@@ -5,7 +8,11 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
         console.log(expenseData);
     };
 
-    const handleClick = () => {
+    const handleClick = async () => {
+        // setExpenseData({...expenseData, id: expenseData.id + 1});
+        //send data to API
+        await addExpense(expenseData)
+
         setExpenseData({
             itemName: "",
             amount: "",
@@ -14,7 +21,10 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
             notes: "",
         });
     };
+
+
     const handleClickClearData = () => {
+        //for clear form data onclick on CLEAR button
         setExpenseData({
             itemName: "",
             amount: "",
@@ -116,7 +126,7 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
                         SUBMIT
                     </button>
                     <input
-                        type="submit"
+                        type="reset"
                         value="CANCEL"
                         onClick={handleClickClearData}
                         className="text-white bg-gray-600 border-0 py-2 px-8 focus:outline-none hover:bg-gray-700 rounded text-lg cursor-pointer"
