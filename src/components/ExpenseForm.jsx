@@ -9,10 +9,9 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
     };
 
     const handleClick = async () => {
-        // setExpenseData({...expenseData, id: expenseData.id + 1});
         //send data to API
-        await addExpense(expenseData)
-
+        await addExpense(expenseData);
+        
         setExpenseData({
             itemName: "",
             amount: "",
@@ -37,7 +36,7 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
     return (
         <div className="text-gray-600 body-font flex items-center justify-center mt-32 mb-10">
             <form
-                className="lg:w-1/3 sm:w-1/2 bg-gray-100 p-5 flex flex-col w-full border rounded shadow"
+                className="lg:w-1/3 sm:w-1/2 bg-gray-100 p-5 flex flex-col w-full border shadow"
                 onSubmit={handleSubmit}
             >
                 <div className="mb-5">
@@ -121,7 +120,7 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
                     <button
                         type="submit"
                         onClick={handleClick}
-                        className="text-white bg-sky-800 border-0 py-2 px-8 focus:outline-none hover:bg-sky-900 rounded text-lg"
+                        className="text-white bg-sky-800 border-0 py-2 px-6 focus:outline-none hover:bg-sky-900 rounded text-lg"
                     >
                         SUBMIT
                     </button>
@@ -129,7 +128,7 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
                         type="reset"
                         value="CANCEL"
                         onClick={handleClickClearData}
-                        className="text-white bg-gray-600 border-0 py-2 px-8 focus:outline-none hover:bg-gray-700 rounded text-lg cursor-pointer"
+                        className="text-white bg-gray-600 border-0 py-2 px-6 focus:outline-none hover:bg-gray-700 rounded text-lg cursor-pointer"
                     />
                 </div>
             </form>

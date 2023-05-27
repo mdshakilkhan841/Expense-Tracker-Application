@@ -33,7 +33,7 @@ const CategoryReport = () => {
                 </div>
 
                 <div className="w-full">
-                    <div className="bg-white border rounded shadow">
+                    <div className="bg-white border shadow">
                         <div className="border-b p-3">
                             <h5 className="font-bold uppercase text-gray-600">Chart</h5>
                         </div>
