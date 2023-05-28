@@ -1,7 +1,21 @@
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { addExpense } from "../../apis/api";
 
 
-const ExpenseForm = ({expenseData, setExpenseData}) => {
+const ExpenseForm = ({ expenseData, setExpenseData }) => {
+
+    const notify = () => toast.success('Expense Added Successfully', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -11,7 +25,7 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
     const handleClick = async () => {
         //send data to API
         await addExpense(expenseData);
-        
+        notify();
         setExpenseData({
             itemName: "",
             amount: "",
@@ -98,9 +112,9 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
                         Incurred on
                     </label>
                     <input
-                        type="datetime-local" 
+                        type="datetime-local"
                         value={expenseData.dateTime}
-                        onChange={(e) => setExpenseData({...expenseData, dateTime: e.target.value})}
+                        onChange={(e) => setExpenseData({ ...expenseData, dateTime: e.target.value })}
                         className="w-full bg-white rounded border border-gray-300 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                     />
                 </div>
@@ -131,6 +145,7 @@ const ExpenseForm = ({expenseData, setExpenseData}) => {
                         className="text-white bg-gray-600 border-0 py-2 px-6 focus:outline-none hover:bg-gray-700 rounded text-lg cursor-pointer"
                     />
                 </div>
+                <ToastContainer />
             </form>
         </div>
     );

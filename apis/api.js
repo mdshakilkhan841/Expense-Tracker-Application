@@ -9,30 +9,38 @@ export const addExpense = async (expenseData) => {
         console.log(error.message)
     }
 }
-
-// export const getExpense = async (expenseData) => {
-//     try{
-//         return  await axios.get(`${URL}/expense-list`, expenseData);
-//     } catch(error) {
-//         console.log(error.message)
-//     }
-// }
-
-export const getExpense = async (expenseType) => {
+// get all expenses
+export const getExpense = async (expenseData) => {
     try {
-      let endpoint = `${URL}/expense-list`;
-  
-      if (expenseType === 'report') {
-        endpoint = `${URL}/expense-report`;
-      } else if (expenseType === 'category') {
-        endpoint = `${URL}/category-report`;
-      } else if (expenseType === 'forecast') {
-        endpoint = `${URL}/forecasted-expenses`;
-      }
-  
-      return await axios.get(endpoint);
+        return await axios.get(`${URL}/expense-list`, expenseData);
     } catch (error) {
-      console.log(error.message);
+        console.log(error.message)
     }
-  };
-  
+}
+
+//get date wise expenses
+export const getDateWiseExpense = async (expenseReport) => {
+    try {
+        return await axios.get(`${URL}/expense-report`, expenseReport);
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+//get expenses by category
+export const getCategoryData = async (categoryReport) => {
+    try {
+        return await axios.get(`${URL}/category-report`, categoryReport);
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+//get expenses by category
+export const getAmountExpenses = async (forecastReport) => {
+    try {
+        return await axios.get(`${URL}/forecasted-expenses`, forecastReport);
+    } catch (error) {
+        console.log(error.message);
+    }
+};

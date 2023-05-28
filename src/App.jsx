@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import AddExpense from "./pages/AddExpense";
 import Report from "./pages/Report";
 import CategoryReport from "./pages/CategoryReport";
-import Forecasted from "./pages/Forecasted";
+import ForecastChart from "./pages/Forecasted";
 import ExpenseList from "./pages/ExpenseList";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
         <Route path="/expense-list" element={<ExpenseList/>} />
         <Route path="/expense-report" element={<Report/>} />
         <Route path="/category-report" element={<CategoryReport/>} />
-        <Route path="/forecasted-expenses" element={<Forecasted/>} />
+        <Route path="/forecasted-expenses" element={<ForecastChart/>} />
       </Routes>
     </BrowserRouter>
   );

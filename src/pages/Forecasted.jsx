@@ -1,80 +1,79 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { getAmountExpenses } from "../../apis/api";
+import { addDays, format } from "date-fns";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-const Forecasted = () => {
+const ForecastChart = () => {
+    const [forecastData, setForecastData] = useState([]);
+    // console.log(forecastData.length)
     useEffect(() => {
-        const chartConfig = {
-            type: "bar",
-            data: {
-                labels: [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                ],
-                datasets: [
-                    {
-                        label: "Likes",
-                        data: [65, 59, 80, 81, 56, 55, 40],
-                        fill: false,
-                        backgroundColor: [
-                            "rgba(255, 99, 132, 0.2)",
-                            "rgba(255, 159, 64, 0.2)",
-                            "rgba(255, 205, 86, 0.2)",
-                            "rgba(75, 192, 192, 0.2)",
-                            "rgba(54, 162, 235, 0.2)",
-                            "rgba(153, 102, 255, 0.2)",
-                            "rgba(201, 203, 207, 0.2)",
-                        ],
-                        borderColor: [
-                            "rgb(255, 99, 132)",
-                            "rgb(255, 159, 64)",
-                            "rgb(255, 205, 86)",
-                            "rgb(75, 192, 192)",
-                            "rgb(54, 162, 235)",
-                            "rgb(153, 102, 255)",
-                            "rgb(201, 203, 207)",
-                        ],
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true,
-                            },
-                        },
-                    ],
-                },
-            },
-        };
-
-        const ctx = document.getElementById("chartjs-1");
-        new window.Chart(ctx, chartConfig);
+        getData();
     }, []);
 
+    const getData = async () => {
+        try {
+            const response = await getAmountExpenses();
+            setForecastData(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error fetching category data:", error);
+        }
+    };
+
+    const getNext7DaysTotalExpense = () => {
+        const currentDate = new Date();
+        const next7Days = [];
+
+        if (forecastData.length === 0) {
+            return next7Days; // Return empty array if forecastData is empty
+        }
+
+        for (let i = 0; i < 7; i++) {
+            const date = addDays(currentDate, i);
+            const formattedDateDDMMYY = format(date, "dd-MM-yyyy");
+            const dayOfWeek = format(date, "EEE"); // Get day of the week (e.g., Mon)
+            const dayOfMonth = format(date, "dd"); // Get day of the month (e.g., 29)
+            const month = format(date, "MM"); // Get month (e.g., 05)
+            const formattedDate = `${dayOfWeek} ${dayOfMonth}/${month}`; // Format the date as "Mon 29/05"
+
+            const totalExpense = forecastData.filter((expense) => expense.date === formattedDateDDMMYY).reduce((total, expense) => total + parseInt(expense.amount), 0);
+
+            next7Days.push({ date: formattedDate, totalExpense });
+        }
+
+        // console.log(next7Days);
+        return next7Days;
+    };
+
     return (
-        <section className="text-black body-font flex items-center justify-center md:mt-32 mt-20">
-            <div className="w-full container mx-auto py-3 px-5 max-w-3xl space-y-2">
-                <div className="w-full">
-                    <div className="bg-white border shadow">
-                        <div className="border-b p-3">
-                            <h5 className="font-bold uppercase text-gray-600">Forecasted Expenses For The Next 7 Days</h5>
-                        </div>
-                        <div className="p-5">
-                            <canvas id="chartjs-1" className="chartjs" />
-                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <div>
+            <section className="text-black body-font flex items-center justify-center md:mt-32 mt-20">
+                <div className="w-full container mx-auto py-3 px-5 max-w-3xl space-y-2">
+                    <div className="text-base font-medium mb-10 flex justify-between items-center">
+
+                    </div>
+                    <div className="w-full">
+                        <div className="bg-white border shadow">
+                            <div className="border-b p-3">
+                                <h5 className="font-bold uppercase text-gray-600">Forecasted Expenses For The Next 7 Days</h5>
+                            </div>
+                            <div className="mt-4">
+                                <ResponsiveContainer width="100%" height={400}>
+                                    <BarChart data={getNext7DaysTotalExpense()}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="date" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Bar dataKey="totalExpense" fill="#8884d8" />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     );
 };
 
-export default Forecasted;
+export default ForecastChart;

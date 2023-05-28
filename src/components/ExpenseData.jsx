@@ -15,7 +15,7 @@ const ExpenseData = () => {
         const response = await getExpense();
         setExpenses(response.data);
         setLoading(false);
-        // console.log(expenses);
+        // console.log(response.data);
     };
 
     return (
@@ -35,7 +35,7 @@ const ExpenseData = () => {
                                         SL No.
                                     </th>
                                     <th scope="col" className="px-4 py-3">
-                                        Date
+                                        DateTime
                                     </th>
                                     <th scope="col" className="px-4 py-3">
                                         category
@@ -53,7 +53,7 @@ const ExpenseData = () => {
                             </thead>
                             <tbody>
                                 {loading ? (
-                                    <div className="flex justify-center items-center">
+                                    <div className="absolute top-[50%] left-[50%]">
                                         <Grid
                                             height="80"
                                             width="80"
