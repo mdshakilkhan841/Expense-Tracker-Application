@@ -14,7 +14,7 @@ const Report = () => {
 
     useEffect(() => {
         getAllExpense();
-    }, []);
+    }, [expenses]);
 
     const getAllExpense = async () => {
         const response = await getDateWiseExpenses();
