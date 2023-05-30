@@ -34,30 +34,33 @@ export const getExpenses = async (expensesData) => {
     } catch (error) {
         console.log(error.message);
         notify(error.response.data.message, "error");
-        
+
     }
 }
 
 //update edit expense (single) data
-export const editExpense = async (expense, expenseId) => {
+export const editExpense = async (expense, expenseId, isExpenseList) => {
     try {
-        return await axios.put(`${URL}/expense-list/${expenseId}`, expense);
+      const path = isExpenseList ? `expense-list/${expenseId}` : `expense-report/${expenseId}`;
+      return await axios.put(`${URL}/${path}`, expense);
     } catch (error) {
-        console.log(error.message);
-        notify(error.response.data.message, "error");
+      console.log(error.message);
+      notify(error.response.data.message, "error");
     }
-}
+  };
+  
 
 //get single expense data using expenseId
-export const getExpense = async (expenseId) => {
+export const getExpense = async (expenseId, isExpenseList) => {
     try {
-        return await axios.get(`${URL}/expense-list/${expenseId}`);
+      const path = isExpenseList ? `expense-list/${expenseId}` : `expense-report/${expenseId}`;
+      return await axios.get(`${URL}/${path}`);
     } catch (error) {
-        console.log(error.message);
-        notify(error.response.data.message, "error");
-        
+      console.log(error.message);
+      notify(error.response.data.message, "error");
     }
-}
+  };
+  
 
 
 //get date wise expenses
@@ -90,10 +93,19 @@ export const getAmountExpenses = async (forecastReport) => {
 
 
 //Delete expense
-export const deleteExpense = async (expenseId) => {
+export const deleteExpense = async (expenseId, isExpenseList) => {
     try {
-        return await axios.delete(`${URL}/expense-list/${expenseId}`);
+        const path = isExpenseList ? `expense-list/${expenseId}` : `expense-report/${expenseId}`;
+        return await axios.delete(`${URL}/${path}`);
     } catch (error) {
         console.log(error.message);
     }
 };
+
+// export const deleteExpense = async (expenseId) => {
+//     try {
+//         return await axios.delete(`${URL}/expense-list/${expenseId}`);
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// };

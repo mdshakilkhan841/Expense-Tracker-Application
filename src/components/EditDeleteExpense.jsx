@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./EditExpense.css";
@@ -22,7 +22,7 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
     const notify = (message, type) => {
         toast[type](message, {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -34,10 +34,10 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
 
     const handleClick = () => {
         setShowModal(true);
-        //get api data
+        // Get API data
         const fetchExpense = async () => {
             try {
-                const response = await getExpense(expenseId);
+                const response = await getExpense(expenseId, true); // Pass true for expense-list path
                 setExpense(response.data[0]); // Destructure the first object from the array
             } catch (error) {
                 console.error("Error fetching expense:", error);
@@ -45,6 +45,7 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
         };
         fetchExpense();
     };
+
 
     const handleInputChange = (e) => {
         setExpense({ ...expense, [e.target.name]: e.target.value });
@@ -63,16 +64,15 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
                 // Display error message
                 return;
             }
-            // post data to api
+            // Post data to API
             try {
                 // Call the API function
-                await editExpense(expense, expenseId);
+                await editExpense(expense, expenseId, true); // Pass true for expense-list path
                 notify("Expense Updated Successfully", "success");
                 console.log(expense);
 
                 setIsChanged(false); // Reset changes flag to false
-                onExpenseUpdate(expense);  // Call the ExpenseData component's update function
-
+                onExpenseUpdate(expense); // Call the ExpenseData component's update function
             } catch (error) {
                 // Handle API error and display error message
                 console.log(error);
@@ -87,26 +87,31 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
             expense.category.trim() === "" ||
             expense.dateTime.trim() === ""
         ) {
-            notify("Please fill out this fields", "error");
+            notify("Please fill out these fields", "error");
             return;
         }
         updateExpense();
         setShowModal(false);
     };
 
-    const handleDeleteExpense = async () => {
-        try {
-            await deleteExpense(expenseId);
-            notify("Expense Deleted Successfully", "success");
-            console.log(expense);
 
-            onExpenseDelete(expenseId);  // Call the ExpenseData component's delete function
-        } catch (error) {
-            // Handle API error and display error message
-            console.log(error);
-            notify("An error occurred. Please try again.", "error");
+    const handleDeleteExpense = async () => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this expense?");
+        if (confirmDelete) {
+            try {
+                await deleteExpense(expenseId, true); // Pass true for expense-list path
+                notify("Expense Deleted Successfully", "success");
+                console.log(expense);
+
+                onExpenseDelete(expenseId); // Call the ExpenseData component's delete function
+            } catch (error) {
+                // Handle API error and display error message
+                console.log(error);
+                notify("An error occurred. Please try again.", "error");
+            }
         }
     };
+
 
     return (
         <>

@@ -2,16 +2,19 @@ import { useState, useEffect } from "react";
 import { getDateWiseExpenses } from "../../apis/api";
 import DatePicker from "../components/DatePicker";
 import "./report.css";
+import EditDeleteExpense from "../components/EditDeleteExpense";
 
 const Report = () => {
     const [expenses, setExpenses] = useState([]);
-    const [dateFrom, setDateFrom] = useState('');
-    const [dateTo, setDateTo] = useState('');
+    const [dateFrom, setDateFrom] = useState("");
+    const [dateTo, setDateTo] = useState("");
+    const [notification, setNotification] = useState(null);
+
     let totalExpenses = 0; // Initialize totalExpenses variable
 
     useEffect(() => {
         getAllExpense();
-    },[]);
+    }, []);
 
     const getAllExpense = async () => {
         const response = await getDateWiseExpenses();
@@ -19,14 +22,44 @@ const Report = () => {
         // console.log(response.data);
     };
 
+    const handleExpenseUpdate = (updatedExpense) => {
+        const updatedExpenses = expenses.map((expense) => {
+            if (expense.expenseId === updatedExpense.expenseId) {
+                return updatedExpense;
+            } else {
+                return expense;
+            }
+        });
+        setExpenses(updatedExpenses);
+    };
+
+    const handleExpenseDelete = (deletedExpenseId) => {
+        const updatedExpenses = expenses.filter(
+            (expense) => expense.expenseId !== deletedExpenseId
+        );
+        setExpenses(updatedExpenses);
+    };
+
+    const handleDetailsOpen = () => {
+        setNotification(null); // Clear the notification when details are opened
+      };
+
     const renderExpenseDetails = () => {
         const uniqueDates = [...new Set(expenses.map((expense) => expense.date))];
+
         return uniqueDates.map((date) => {
             const dateExpenses = expenses.filter((expense) => expense.date === date);
-            const totalAmount = dateExpenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+            const totalAmount = dateExpenses.reduce(
+                (sum, expense) => sum + parseFloat(expense.amount),
+                0
+            );
             totalExpenses += totalAmount;
             return (
-                <details key={date} className="bg-[rgba(75,192,192,0.2)] open:bg-[rgba(54,162,235,0.2)] duration-300 border border-[rgb(75,192,192)] open:border-[rgb(54,162,235)]">
+                <details
+                    key={date}
+                    className="bg-[rgba(75,192,192,0.2)] open:bg-[rgba(54,162,235,0.2)] duration-300 border border-[rgb(75,192,192)] open:border-[rgb(54,162,235)]"
+                    onToggle={handleDetailsOpen} // Handle details open event
+                >
                     <summary className="relative bg-inherit pl-5 pr-14 py-2 text-lg cursor-pointer list-none flex justify-between font-semibold">
                         <span>Total Expense of {date}</span>
                         <span className="text-green-700 font-bold">{totalAmount} Tk</span>
@@ -58,17 +91,25 @@ const Report = () => {
                                             </thead>
                                             <tbody>
                                                 {dateExpenses.map((expense, index) => (
-                                                    <tr key={index} className="odd:bg-neutral-100 even:bg-neutral-200 font-medium sm:text-center">
-                                                        <td className="whitespace-nowrap px-4 py-2">{expense.category}</td>
-                                                        <td className="whitespace-nowrap px-4 py-2">{expense.itemName}</td>
-                                                        <td className="whitespace-nowrap px-4 py-2 text-center">{expense.amount}</td>
-                                                        <td className="whitespace-nowrap px-4 py-2 text-center space-x-2">
-                                                            <button className="font-semibold py-1 px-3 rounded text-xs bg-green-400 hover:bg-green-500 cursor-pointer">
-                                                                Edit
-                                                            </button>
-                                                            <button className="text-white font-semibold py-1 px-3 rounded text-xs bg-red-500 hover:bg-red-600 cursor-pointer">
-                                                                Delete
-                                                            </button>
+                                                    <tr
+                                                        key={index}
+                                                        className="odd:bg-neutral-100 even:bg-neutral-200 font-medium sm:text-center"
+                                                    >
+                                                        <td className="whitespace-nowrap px-4 py-2">
+                                                            {expense.category}
+                                                        </td>
+                                                        <td className="whitespace-nowrap px-4 py-2">
+                                                            {expense.itemName}
+                                                        </td>
+                                                        <td className="whitespace-nowrap px-4 py-2 text-center">
+                                                            {expense.amount}
+                                                        </td>
+                                                        <td className="px-4 py-2">
+                                                            <EditDeleteExpense
+                                                                expenseId={expense.expenseId}
+                                                                onExpenseUpdate={handleExpenseUpdate}
+                                                                onExpenseDelete={handleExpenseDelete}
+                                                            />
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -83,8 +124,6 @@ const Report = () => {
             );
         });
     };
-
-    // const totalExpenses = expenses.reduce((sum, expense) => sum + parseInt(expense.amount), 0);
 
     return (
         <section className="text-black body-font flex items-center justify-center md:mt-32 mt-20">
@@ -114,4 +153,3 @@ const Report = () => {
 };
 
 export default Report;
-
