@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { getExpense } from "../../apis/api";
+import { getExpenses } from "../../apis/api";
 import { Grid } from "react-loader-spinner";
+import EditExpense from "./EditExpense";
+import DeleteExpense from "./DeleteExpense";
 
 const ExpenseData = () => {
     const [expenses, setExpenses] = useState([]);
@@ -12,7 +14,7 @@ const ExpenseData = () => {
 
     const getAllExpense = async () => {
         setLoading(true);
-        const response = await getExpense();
+        const response = await getExpenses();
         setExpenses(response.data);
         setLoading(false);
         // console.log(response.data);
@@ -65,10 +67,12 @@ const ExpenseData = () => {
                                             visible={true}
                                         />
                                     </div>
-
                                 ) : (
                                     expenses.map((e, index) => (
-                                        <tr key={index} className="odd:bg-neutral-100 even:bg-neutral-200 font-medium sm:text-left text-center">
+                                        <tr
+                                            key={index}
+                                            className="odd:bg-neutral-100 even:bg-neutral-200 font-medium sm:text-left text-center"
+                                        >
                                             <td className="whitespace-nowrap px-2 py-2 text-center">
                                                 {index + 1}
                                             </td>
@@ -84,13 +88,13 @@ const ExpenseData = () => {
                                             <td className="whitespace-nowrap px-2 py-2">
                                                 {e.amount}
                                             </td>
-                                            <td className="whitespace-nowrap px-2 py-2 text-center space-x-2">
-                                                <button className="font-semibold py-1 px-3 rounded text-xs bg-green-500  hover:bg-green-600 cursor-pointer">
-                                                    Edit
-                                                </button>
-                                                <button className="text-white font-semibold py-1 px-3 rounded text-xs bg-red-500 hover:bg-red-600 cursor-pointer">
-                                                    Delete
-                                                </button>
+                                            <td className="flex px-2 py-2 space-x-2">
+                                                <div>
+                                                    <EditExpense expenseId={e.expenseId} />
+                                                </div>
+                                                <div>
+                                                    <DeleteExpense expenseId={e.expenseId}/>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))

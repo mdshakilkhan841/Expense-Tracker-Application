@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAmountExpenses } from "../../apis/api";
 import { addDays, format } from "date-fns";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,} from "recharts";
 
 const ForecastChart = () => {
     const [forecastData, setForecastData] = useState([]);
@@ -36,7 +36,9 @@ const ForecastChart = () => {
             const month = format(date, "MM"); // Get month (e.g., 05)
             const formattedDate = `${dayOfWeek} ${dayOfMonth}/${month}`; // Format the date as "Mon 29/05"
 
-            const totalExpense = forecastData.filter((expense) => expense.date === formattedDateDDMMYY).reduce((total, expense) => total + parseInt(expense.amount), 0);
+            const totalExpense = forecastData
+                .filter((expense) => expense.date === formattedDateDDMMYY)
+                .reduce((total, expense) => total + parseInt(expense.amount), 0);
 
             next7Days.push({ date: formattedDate, totalExpense });
         }
@@ -50,14 +52,15 @@ const ForecastChart = () => {
             <section className="text-black body-font flex items-center justify-center md:mt-32 mt-20">
                 <div className="w-full container mx-auto py-3 px-5 max-w-3xl space-y-2">
                     <div className="text-base font-medium mb-10 flex justify-between items-center">
-
                     </div>
                     <div className="w-full">
                         <div className="bg-white border shadow">
                             <div className="border-b p-3">
-                                <h5 className="font-bold uppercase text-gray-600">Forecasted Expenses For The Next 7 Days</h5>
+                                <h5 className="font-bold uppercase text-gray-600">
+                                    Forecasted Expenses For The Next 7 Days
+                                </h5>
                             </div>
-                            <div className="mt-4">
+                            <div className="mt-4 p-5">
                                 <ResponsiveContainer width="100%" height={400}>
                                     <BarChart data={getNext7DaysTotalExpense()}>
                                         <CartesianGrid strokeDasharray="3 3" />

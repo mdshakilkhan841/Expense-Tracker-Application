@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDateWiseExpense } from "../../apis/api";
+import { getDateWiseExpenses } from "../../apis/api";
 import DatePicker from "../components/DatePicker";
 import "./report.css";
 
@@ -14,7 +14,7 @@ const Report = () => {
     },[]);
 
     const getAllExpense = async () => {
-        const response = await getDateWiseExpense();
+        const response = await getDateWiseExpenses();
         setExpenses(response.data);
         // console.log(response.data);
     };
@@ -23,7 +23,7 @@ const Report = () => {
         const uniqueDates = [...new Set(expenses.map((expense) => expense.date))];
         return uniqueDates.map((date) => {
             const dateExpenses = expenses.filter((expense) => expense.date === date);
-            const totalAmount = dateExpenses.reduce((sum, expense) => sum + parseInt(expense.amount), 0);
+            const totalAmount = dateExpenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
             totalExpenses += totalAmount;
             return (
                 <details key={date} className="bg-[rgba(75,192,192,0.2)] open:bg-[rgba(54,162,235,0.2)] duration-300 border border-[rgb(75,192,192)] open:border-[rgb(54,162,235)]">
