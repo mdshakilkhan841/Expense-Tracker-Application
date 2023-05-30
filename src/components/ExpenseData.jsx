@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { getExpenses } from "../../apis/api";
 import { Grid } from "react-loader-spinner";
-import EditExpense from "./EditExpense";
-import DeleteExpense from "./DeleteExpense";
+import EditDeleteExpense from "./EditDeleteExpense";
 
 const ExpenseData = () => {
     const [expenses, setExpenses] = useState([]);
@@ -18,6 +17,24 @@ const ExpenseData = () => {
         setExpenses(response.data);
         setLoading(false);
         // console.log(response.data);
+    };
+
+    const handleExpenseUpdate = (updatedExpense) => {
+        const updatedExpenses = expenses.map((expense) => {
+            if (expense.expenseId === updatedExpense.expenseId) {
+                return updatedExpense;
+            } else {
+                return expense;
+            }
+        });
+        setExpenses(updatedExpenses);
+    };
+
+    const handleExpenseDelete = (deletedExpenseId) => {
+        const updatedExpenses = expenses.filter(
+            (expense) => expense.expenseId !== deletedExpenseId
+        );
+        setExpenses(updatedExpenses);
     };
 
     return (
@@ -88,13 +105,12 @@ const ExpenseData = () => {
                                             <td className="whitespace-nowrap px-2 py-2">
                                                 {e.amount}
                                             </td>
-                                            <td className="flex px-2 py-2 space-x-2">
-                                                <div>
-                                                    <EditExpense expenseId={e.expenseId} />
-                                                </div>
-                                                <div>
-                                                    <DeleteExpense expenseId={e.expenseId}/>
-                                                </div>
+                                            <td className="px-2 py-2 ">
+                                                <EditDeleteExpense
+                                                    expenseId={e.expenseId}
+                                                    onExpenseUpdate={handleExpenseUpdate}
+                                                    onExpenseDelete={handleExpenseDelete}
+                                                />
                                             </td>
                                         </tr>
                                     ))

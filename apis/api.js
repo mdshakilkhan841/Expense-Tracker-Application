@@ -38,10 +38,10 @@ export const getExpenses = async (expensesData) => {
     }
 }
 
-//post edit expense (single) data
+//update edit expense (single) data
 export const editExpense = async (expense, expenseId) => {
     try {
-        return await axios.post(`${URL}/expense-list/${expenseId}`, expense);
+        return await axios.put(`${URL}/expense-list/${expenseId}`, expense);
     } catch (error) {
         console.log(error.message);
         notify(error.response.data.message, "error");
@@ -83,6 +83,16 @@ export const getCategoryData = async (categoryReport) => {
 export const getAmountExpenses = async (forecastReport) => {
     try {
         return await axios.get(`${URL}/forecasted-expenses`, forecastReport);
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+
+//Delete expense
+export const deleteExpense = async (expenseId) => {
+    try {
+        return await axios.delete(`${URL}/expense-list/${expenseId}`);
     } catch (error) {
         console.log(error.message);
     }
