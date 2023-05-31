@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
-import { getDateWiseExpenses } from "../../apis/api";
+import { getDateWiseExpenses, getDateToDateExpenses } from "../../apis/api";
 import DatePicker from "../components/DatePicker";
-import "./report.css";
 import EditDeleteExpense from "../components/EditDeleteExpense";
+import "./report.css";
 
-const Report = () => {
+const Report = (props) => {
     const [expenses, setExpenses] = useState([]);
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
-    const [notification, setNotification] = useState(null);
 
     let totalExpenses = 0; // Initialize totalExpenses variable
 
@@ -21,6 +20,13 @@ const Report = () => {
         setExpenses(response.data);
         // console.log(response.data);
     };
+
+    // const getSortExpense = async () => {
+    //     const response = await getDateToDateExpenses(dateFrom, dateTo);
+    //     setExpenses(response.data);
+    //     // console.log(response.data);
+    // };
+
 
     const handleExpenseUpdate = (updatedExpense) => {
         const updatedExpenses = expenses.map((expense) => {
@@ -41,9 +47,17 @@ const Report = () => {
         setExpenses(updatedExpenses);
     };
 
-    const handleDetailsOpen = () => {
-        setNotification(null); // Clear the notification when details are opened
-      };
+    // sort data by date to date
+    // const handleFilterExpenses = () => {
+    //     if (dateFrom && dateTo) {
+    //         // If both dates are selected
+    //         getSortExpense();
+    //     } else {
+    //         // If no date range is selected, show all data
+    //         getAllExpense();
+    //     }
+    // };
+
 
     const renderExpenseDetails = () => {
         const uniqueDates = [...new Set(expenses.map((expense) => expense.date))];
@@ -59,7 +73,6 @@ const Report = () => {
                 <details
                     key={date}
                     className="bg-[rgba(75,192,192,0.2)] open:bg-[rgba(54,162,235,0.2)] duration-300 border border-[rgb(75,192,192)] open:border-[rgb(54,162,235)]"
-                    onToggle={handleDetailsOpen} // Handle details open event
                 >
                     <summary className="relative bg-inherit pl-5 pr-14 py-2 text-lg cursor-pointer list-none flex justify-between font-semibold">
                         <span>Total Expense of {date}</span>
@@ -126,6 +139,7 @@ const Report = () => {
         });
     };
 
+
     return (
         <section className="text-black body-font flex items-center justify-center md:mt-32 mt-20">
             <div className="w-full container mx-auto py-3 px-5 max-w-3xl space-y-2">
@@ -137,7 +151,10 @@ const Report = () => {
                         dateTo={dateTo}
                         setDateTo={setDateTo}
                     />
-                    <button className="shadow font-bold rounded-xl px-3 py-1 bg-green-500  hover:bg-green-600 cursor-pointer">
+                    <button
+                        // onClick={handleFilterExpenses}
+                        className="shadow font-bold rounded-xl px-3 py-1 bg-green-500  hover:bg-green-600 cursor-pointer"
+                    >
                         Go
                     </button>
                 </div>

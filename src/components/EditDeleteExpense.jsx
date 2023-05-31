@@ -24,20 +24,20 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
     //     });
     // };
 
-    const handleClick = () => {
-        setShowModal(true);
-        // Get API data
-        const fetchExpense = async () => {
-            try {
-                const response = await getExpense(expenseId, true); // Pass true for expense-list path
-                setExpense(response.data[0]); // Destructure the first object from the array
-            } catch (error) {
-                console.error("Error fetching expense:", error);
-            }
-        };
-        fetchExpense();
+    // Get API single data
+    const fetchExpense = async () => {
+        try {
+            const response = await getExpense(expenseId, true); // Pass true for expense-list path
+            setExpense(response.data[0]); // Destructure the first object from the array
+        } catch (error) {
+            console.error("Error fetching expense:", error);
+        }
     };
 
+    const handleEditClick = () => {
+        setShowModal(true);
+        fetchExpense();
+    };
 
     const handleInputChange = (e) => {
         setExpense({ ...expense, [e.target.name]: e.target.value });
@@ -61,7 +61,6 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
             await editExpense(expense, expenseId, true); // Pass true for expense-list path
             // notify("Expense Updated Successfully", "success");
             console.log("Edited Item", expense);
-
             setIsChanged(false); // Reset changes flag to false
             onExpenseUpdate(expense); // Call the ExpenseData component's update function
             setShowModal(false);
@@ -72,10 +71,10 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
         }
     };
 
-
-
     const handleDeleteExpense = async () => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this expense?");
+        const confirmDelete = window.confirm(
+            "Are you sure you want to delete this expense?"
+        );
         if (confirmDelete) {
             try {
                 await deleteExpense(expenseId, true); // Pass true for expense-list path
@@ -91,14 +90,13 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
         }
     };
 
-
     return (
         <div className="flex justify-center gap-3">
             <div>
                 <button
                     className="font-semibold py-1 px-3 rounded text-xs bg-green-500 hover:bg-green-600 cursor-pointer"
                     type="button"
-                    onClick={() => handleClick(expenseId)}
+                    onClick={() => handleEditClick(expenseId)}
                 >
                     Edit
                 </button>

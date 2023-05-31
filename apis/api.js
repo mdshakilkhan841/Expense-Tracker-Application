@@ -38,29 +38,42 @@ export const getExpenses = async (expensesData) => {
     }
 }
 
-//update edit expense (single) data
-export const editExpense = async (expense, expenseId, isExpenseList) => {
+
+// get date to date expenses
+export const getDateToDateExpenses = async (dateFrom, dateTo) => {
     try {
-      const path = isExpenseList ? `expense-list/${expenseId}` : `expense-report/${expenseId}`;
-      return await axios.put(`${URL}/${path}`, expense);
+      return await axios.get(`${URL}/expense-report`, {params: {dateFrom, dateTo,}});
     } catch (error) {
       console.log(error.message);
       notify(error.response.data.message, "error");
     }
   };
   
+  
+
+//update edit expense (single) data
+export const editExpense = async (expense, expenseId, isExpenseList) => {
+    try {
+        const path = isExpenseList ? `expense-list/${expenseId}` : `expense-report/${expenseId}`;
+        return await axios.put(`${URL}/${path}`, expense);
+    } catch (error) {
+        console.log(error.message);
+        notify(error.response.data.message, "error");
+    }
+};
+
 
 //get single expense data using expenseId
 export const getExpense = async (expenseId, isExpenseList) => {
     try {
-      const path = isExpenseList ? `expense-list/${expenseId}` : `expense-report/${expenseId}`;
-      return await axios.get(`${URL}/${path}`);
+        const path = isExpenseList ? `expense-list/${expenseId}` : `expense-report/${expenseId}`;
+        return await axios.get(`${URL}/${path}`);
     } catch (error) {
-      console.log(error.message);
-      notify(error.response.data.message, "error");
+        console.log(error.message);
+        notify(error.response.data.message, "error");
     }
-  };
-  
+};
+
 
 
 //get date wise expenses
@@ -101,11 +114,3 @@ export const deleteExpense = async (expenseId, isExpenseList) => {
         console.log(error.message);
     }
 };
-
-// export const deleteExpense = async (expenseId) => {
-//     try {
-//         return await axios.delete(`${URL}/expense-list/${expenseId}`);
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// };

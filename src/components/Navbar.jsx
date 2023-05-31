@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { MdLibraryAdd } from "react-icons/md";
 import { FaListUl } from "react-icons/fa";
@@ -13,10 +13,13 @@ const Navbar = () => {
     const [isUserMenuVisible, setUserMenuVisible] = useState(false);
     const [isNavMenuVisible, setNavMenuVisible] = useState(false);
     const appRef = useRef(null);
+    const location = useLocation();
+    const [activePage, setActivePage] = useState(location.pathname);
 
     const handleUserButtonClick = () => {
         setUserMenuVisible((prevState) => !prevState);
     };
+
     const handleNavToggleClick = () => {
         setNavMenuVisible((prevState) => !prevState);
     };
@@ -34,6 +37,10 @@ const Navbar = () => {
             document.removeEventListener("click", handleOutsideClick);
         };
     }, []);
+
+    useEffect(() => {
+        setActivePage(location.pathname);
+    }, [location]);
 
     return (
         <nav className="bg-white fixed w-full z-10 top-0 shadow" ref={appRef}>
@@ -96,12 +103,19 @@ const Navbar = () => {
                     </div>
                 </div>
 
-                <div className={`w-full flex-grow lg:flex lg:items-center lg:w-auto mt-2 lg:mt-0 bg-white z-20 ${isNavMenuVisible ? "" : "hidden"}`}>
+                <div
+                    className={`w-full flex-grow lg:flex lg:items-center lg:w-auto mt-2 lg:mt-0 bg-white z-20 ${isNavMenuVisible ? "" : "hidden"
+                        }`}
+                >
                     <ul className="list-reset lg:flex flex-1 items-center px-4 md:px-0 font-semibold">
                         <li>
                             <Link
                                 to={"/"}
-                                className="flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 border-b-2 border-orange-600 hover:border-orange-500 cursor-pointer">
+                                className={`flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 cursor-pointer hover:border-orange-500 ${activePage === "/"
+                                        ? "border-b-2 border-orange-500"
+                                        : "border-b-2 border-white"
+                                    }`}
+                            >
                                 <MdLibraryAdd />
                                 <span className="pb-1 md:pb-0 text-sm">Add Expense</span>
                             </Link>
@@ -109,25 +123,47 @@ const Navbar = () => {
                         <li>
                             <Link
                                 to={"/expense-list"}
-                                className="flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 border-b-2 border-white hover:border-pink-500 cursor-pointer">
+                                className={`flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 cursor-pointer hover:border-pink-500 ${activePage === "/expense-list"
+                                        ? "border-b-2 border-pink-500"
+                                        : "border-b-2 border-white"
+                                    }`}
+                            >
                                 <FaListUl />
                                 <span className="pb-1 md:pb-0 text-sm">Expense List</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={'/expense-report'} className="flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 border-b-2 border-white hover:border-purple-500 cursor-pointer">
+                            <Link
+                                to={"/expense-report"}
+                                className={`flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 cursor-pointer hover:border-purple-500 ${activePage === "/expense-report"
+                                        ? "border-b-2 border-purple-500"
+                                        : "border-b-2 border-white"
+                                    }`}
+                            >
                                 <CgNotes />
                                 <span className="pb-1 md:pb-0 text-sm">Report</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={'/category-report'} className="flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 border-b-2 border-white hover:border-green-500 cursor-pointer">
+                            <Link
+                                to={"/category-report"}
+                                className={`flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 cursor-pointer hover:border-green-500 ${activePage === "/category-report"
+                                        ? "border-b-2 border-green-500"
+                                        : "border-b-2 border-white"
+                                    }`}
+                            >
                                 <AiOutlinePieChart />
                                 <span className="pb-1 md:pb-0 text-sm">Category Report</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={'/forecasted-expenses'} className="flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 border-b-2 border-white hover:border-red-500 cursor-pointer">
+                            <Link
+                                to={"/forecasted-expenses"}
+                                className={`flex items-center space-x-3 mr-6 my-2 md:my-0 py-1 md:py-3 pl-1 align-middle text-gray-500 hover:text-gray-900 cursor-pointer hover:border-red-500 ${activePage === "/forecasted-expenses"
+                                        ? "border-b-2 border-red-500"
+                                        : "border-b-2 border-white"
+                                    }`}
+                            >
                                 <IoStatsChartSharp />
                                 <span className="pb-1 md:pb-0 text-sm">Forecasted</span>
                             </Link>
