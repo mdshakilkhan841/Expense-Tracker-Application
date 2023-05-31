@@ -14,7 +14,7 @@ const Report = () => {
 
     useEffect(() => {
         getAllExpense();
-    }, [expenses]);
+    }, []);
 
     const getAllExpense = async () => {
         const response = await getDateWiseExpenses();
@@ -31,6 +31,7 @@ const Report = () => {
             }
         });
         setExpenses(updatedExpenses);
+        getAllExpense();
     };
 
     const handleExpenseDelete = (deletedExpenseId) => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 import { getExpense, editExpense, deleteExpense } from "../../apis/api";
 
 const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
@@ -18,10 +18,11 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
     const { itemName, amount, category, dateTime, notes } = expense;
 
     //React toastify message function
-    const notify = (message, type) => {
-        toast[type](message, {
-        });
-    };
+    // const notify = (message, type) => {
+    //     toast[type](message, {
+    //         position: "bottom-right",
+    //     });
+    // };
 
     const handleClick = () => {
         setShowModal(true);
@@ -51,14 +52,14 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
             expense.category.trim() === "" ||
             expense.dateTime.trim() === ""
         ) {
-            notify("Please fill out all the fields", "error");
+            // notify("Please fill out all the fields", "error");
             return;
         }
 
         try {
             // Call the API function
             await editExpense(expense, expenseId, true); // Pass true for expense-list path
-            notify("Expense Updated Successfully", "success");
+            // notify("Expense Updated Successfully", "success");
             console.log("Edited Item", expense);
 
             setIsChanged(false); // Reset changes flag to false
@@ -67,7 +68,7 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
         } catch (error) {
             // Handle API error and display error message
             console.log(error);
-            notify("An error occurred. Please try again.", "error");
+            // notify("An error occurred. Please try again.", "error");
         }
     };
 
@@ -78,14 +79,14 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
         if (confirmDelete) {
             try {
                 await deleteExpense(expenseId, true); // Pass true for expense-list path
-                notify("Expense Deleted Successfully", "success");
+                // notify("Expense Deleted Successfully", "success");
                 console.log("Deleted Item", expense);
 
                 onExpenseDelete(expenseId); // Call the ExpenseData component's delete function
             } catch (error) {
                 // Handle API error and display error message
                 console.log(error);
-                notify("An error occurred. Please try again.", "error");
+                // notify("An error occurred. Please try again.", "error");
             }
         }
     };
@@ -237,7 +238,7 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
                     Delete
                 </button>
             </div>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
         </div>
     );
 };

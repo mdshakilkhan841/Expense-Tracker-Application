@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAmountExpenses } from "../../apis/api";
 import { addDays, format } from "date-fns";
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Label } from "recharts";
 
 const ForecastChart = () => {
     const [forecastData, setForecastData] = useState([]);
@@ -10,6 +10,7 @@ const ForecastChart = () => {
         getData();
     }, []);
 
+    //API call for get expenses data 
     const getData = async () => {
         try {
             const response = await getAmountExpenses();
@@ -18,7 +19,7 @@ const ForecastChart = () => {
         } catch (error) {
             console.error("Error fetching category data:", error);
         }
-    };
+    }; forecastData
 
     const getNext7DaysTotalExpense = () => {
         const currentDate = new Date();
@@ -30,17 +31,17 @@ const ForecastChart = () => {
 
         for (let i = 0; i < 7; i++) {
             const date = addDays(currentDate, i);
-            const formattedDateDDMMYY = format(date, "dd-MM-yyyy");
+            const formattedDateDDMMYY = format(date, "dd/MM/yyyy");
             const dayOfWeek = format(date, "EEE"); // Get day of the week (e.g., Mon)
             const dayOfMonth = format(date, "dd"); // Get day of the month (e.g., 29)
             const month = format(date, "MM"); // Get month (e.g., 05)
             const formattedDate = `${dayOfWeek} ${dayOfMonth}/${month}`; // Format the date as "Mon 29/05"
 
-            const totalExpense = forecastData
+            const DailyExpense = forecastData
                 .filter((expense) => expense.date === formattedDateDDMMYY)
                 .reduce((total, expense) => total + parseInt(expense.amount), 0);
 
-            next7Days.push({ date: formattedDate, totalExpense });
+            next7Days.push({ date: formattedDate, DailyExpense });
         }
 
         // console.log(next7Days);
@@ -56,7 +57,7 @@ const ForecastChart = () => {
                     <div className="w-full">
                         <div className="bg-white border shadow">
                             <div className="border-b p-3">
-                                <h5 className="font-bold uppercase text-gray-600">
+                                <h5 className="font-bold uppercase">
                                     Forecasted Expenses For The Next 7 Days
                                 </h5>
                             </div>
@@ -65,9 +66,9 @@ const ForecastChart = () => {
                                     <BarChart data={getNext7DaysTotalExpense()}>
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <XAxis dataKey="date" />
-                                        <YAxis />
                                         <Tooltip />
-                                        <Bar dataKey="totalExpense" fill="#8884d8" />
+                                        <Bar dataKey="DailyExpense" fill="#8884d8" label={{ fill: 'black', fontSize: 15, position :'top' }}>
+                                        </Bar>
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>
