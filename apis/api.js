@@ -3,7 +3,9 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// const URL = 'https://expense-tracker-application.onrender.com';
 const URL = 'http://localhost:8000';
+
 
 const notify = (message, type) => {
     toast[type](message, {
@@ -42,7 +44,7 @@ export const getExpenses = async (expensesData) => {
 // get date to date expenses
 export const getDateToDateExpenses = async (dateFrom, dateTo) => {
     try {
-      return await axios.get(`${URL}/expense-report`, {params: {dateFrom, dateTo,}});
+      return await axios.get(`${URL}/expense-report/${dateFrom} ${dateTo}`, {params: {dateFrom, dateTo,}});
     } catch (error) {
       console.log(error.message);
       notify(error.response.data.message, "error");

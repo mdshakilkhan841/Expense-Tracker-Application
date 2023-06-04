@@ -1,6 +1,6 @@
 import { useState } from "react";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { getExpense, editExpense, deleteExpense } from "../../apis/api";
 
 const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
@@ -17,12 +17,12 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
 
     const { itemName, amount, category, dateTime, notes } = expense;
 
-    //React toastify message function
-    // const notify = (message, type) => {
-    //     toast[type](message, {
-    //         position: "bottom-right",
-    //     });
-    // };
+    // React toastify message function
+    const notify = (message, type) => {
+        toast[type](message, {
+            position: "bottom-right",
+        });
+    };
 
     // Get API single data
     const fetchExpense = async () => {
@@ -52,7 +52,7 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
             expense.category.trim() === "" ||
             expense.dateTime.trim() === ""
         ) {
-            // notify("Please fill out all the fields", "error");
+            notify("Please fill out all the fields", "error");
             return;
         }
 
@@ -236,7 +236,7 @@ const EditDeleteExpense = ({ expenseId, onExpenseUpdate, onExpenseDelete }) => {
                     Delete
                 </button>
             </div>
-            {/* <ToastContainer /> */}
+            <ToastContainer />
         </div>
     );
 };

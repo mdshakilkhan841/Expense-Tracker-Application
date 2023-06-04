@@ -4,10 +4,10 @@ import DatePicker from "../components/DatePicker";
 import EditDeleteExpense from "../components/EditDeleteExpense";
 import "./report.css";
 
-const Report = (props) => {
-    const [expenses, setExpenses] = useState([]);
+const Report = () => {
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
+    const [expenses, setExpenses] = useState([]);
 
     let totalExpenses = 0; // Initialize totalExpenses variable
 
@@ -21,11 +21,11 @@ const Report = (props) => {
         // console.log(response.data);
     };
 
-    // const getSortExpense = async () => {
-    //     const response = await getDateToDateExpenses(dateFrom, dateTo);
-    //     setExpenses(response.data);
-    //     // console.log(response.data);
-    // };
+    const handleGetSortExpense = async () => {
+        const response = await getDateToDateExpenses(dateFrom, dateTo);
+        setExpenses(response.data);
+        console.log(response.data);
+    };
 
 
     const handleExpenseUpdate = (updatedExpense) => {
@@ -41,22 +41,9 @@ const Report = (props) => {
     };
 
     const handleExpenseDelete = (deletedExpenseId) => {
-        const updatedExpenses = expenses.filter(
-            (expense) => expense.expenseId !== deletedExpenseId
-        );
+        const updatedExpenses = expenses.filter((expense) => expense.expenseId !== deletedExpenseId);
         setExpenses(updatedExpenses);
     };
-
-    // sort data by date to date
-    // const handleFilterExpenses = () => {
-    //     if (dateFrom && dateTo) {
-    //         // If both dates are selected
-    //         getSortExpense();
-    //     } else {
-    //         // If no date range is selected, show all data
-    //         getAllExpense();
-    //     }
-    // };
 
 
     const renderExpenseDetails = () => {
@@ -64,11 +51,13 @@ const Report = (props) => {
 
         return uniqueDates.map((date) => {
             const dateExpenses = expenses.filter((expense) => expense.date === date);
-            const totalAmount = dateExpenses.reduce(
-                (sum, expense) => sum + parseFloat(expense.amount),
-                0
-            );
+            //amount calculation for each segment
+            let totalAmount = 0;
+            dateExpenses.forEach((expense) => {
+                totalAmount += parseFloat(expense.amount);
+            });
             totalExpenses += totalAmount;
+            
             return (
                 <details
                     key={date}
@@ -152,7 +141,7 @@ const Report = (props) => {
                         setDateTo={setDateTo}
                     />
                     <button
-                        // onClick={handleFilterExpenses}
+                        onClick={handleGetSortExpense}
                         className="shadow font-bold rounded-xl px-3 py-1 bg-green-500  hover:bg-green-600 cursor-pointer"
                     >
                         Go

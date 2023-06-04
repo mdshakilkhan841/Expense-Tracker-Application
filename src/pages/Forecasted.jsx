@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAmountExpenses } from "../../apis/api";
 import { addDays, format } from "date-fns";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Label } from "recharts";
+import { BarChart, Bar, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const ForecastChart = () => {
     const [forecastData, setForecastData] = useState([]);
