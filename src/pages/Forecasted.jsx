@@ -37,6 +37,7 @@ const ForecastChart = () => {
             const month = format(date, "MM"); // Get month (e.g., 05)
             const formattedDate = `${dayOfWeek} ${dayOfMonth}/${month}`; // Format the date as "Mon 29/05"
 
+            //graph check
             const DailyExpense = forecastData
                 .filter((expense) => expense.date === formattedDateDDMMYY)
                 .reduce((total, expense) => total + parseInt(expense.amount), 0);
